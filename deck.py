@@ -22,10 +22,12 @@ class Deck:
         self.discard = []
 
         for i in range(Deck.deckSize-1,0,-1):
-           switchIndex = random.randrange(i)
-           temp = self.sequence[switchIndex]
-           self.sequence[switchIndex] = self.sequence[i]
-           self.sequence[i] = temp
+            self.swap(i, random.randrange(i))
+
+    def swap(self, index1, index2):
+       temp = self.sequence[index2]
+       self.sequence[index2] = self.sequence[index1]
+       self.sequence[index1] = temp
     
     def deal(self):
         dealtCard = self.sequence.pop()
