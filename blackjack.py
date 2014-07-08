@@ -15,7 +15,7 @@ class Blackjack:
                     'J': 10,
                     'Q': 10,
                     'K': 10,
-                    'A': 11
+                    'A': 1
             }
 
     def __init__(self):
@@ -36,8 +36,16 @@ class Blackjack:
     def evaluateHand(cls, hand):
         handValue = 0
 
+        aces = 0
+
         for card in hand:
             handValue += cls.getCardValue(card)
+            if card.value == "A":
+                aces += 1
+
+        if aces > 0:
+            if handValue + 10 <= 21:
+                return handValue + 10
 
         return handValue
 
