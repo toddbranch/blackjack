@@ -37,4 +37,4 @@ class Deck:
 
     def printDeck(self):
         for element in self.sequence:
-            element.prettyPrint()
+            print(element.prettyPrint())
