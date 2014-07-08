@@ -37,7 +37,7 @@ class Blackjack:
         handValue = 0
 
         for card in hand:
-            handValue += cls.getCardValue
+            handValue += cls.getCardValue(card)
 
         return handValue
 
@@ -54,6 +54,13 @@ class Blackjack:
             return True
 
         return False
+
+    @classmethod
+    def isBusted(cls, hand):
+        if cls.evaluateHand(hand) > 21:
+            return True
+        else:
+            return False
 
     @staticmethod
     def payBlackjack(bet):
