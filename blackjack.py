@@ -15,7 +15,7 @@ class Blackjack:
                     'J': 10,
                     'Q': 10,
                     'K': 10,
-                    'A': 1
+                    'A': 1      # also 11, but default to 1
             }
 
     def __init__(self):
@@ -52,6 +52,8 @@ class Blackjack:
     def didDealerBlackjack(self):
         return self.checkBlackjack(self.dealerHand)
 
+    # API consumers must interpret the result strings returned
+    # Using a dictionary with these strings as keys to functions works well
     def handResult(self):
         dealerScore = self.evaluateHand(self.dealerHand)
         playerScore = self.evaluateHand(self.playerHand)
@@ -76,7 +78,6 @@ class Blackjack:
     @classmethod
     def evaluateHand(cls, hand):
         handValue = 0
-
         aces = 0
 
         for card in hand:
@@ -130,4 +131,3 @@ class Blackjack:
     def printHidden(hand):
         print(hand[0].prettyPrint(), end="")
         print("|X|")
-
