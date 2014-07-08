@@ -1,11 +1,17 @@
-import blackjack
+from blackjack import Blackjack
+
+#TODO: Refactor - a lot of this should be moved into the blackjack module, main.py should be primarily for handling user input
 
 # TODO: handle non-integer inputs
 def getPlayerBet(bank):
     bet = bank + 1
 
     while bet > bank:
-        bet = int(input("Place your bet: "))
+        try:
+            bet = int(input("Place your bet: "))
+        except ValueError:
+            print("Bets must be a numeric value!")
+            printDivider()
 
     return bet
 
@@ -35,8 +41,9 @@ def printGame(playerHand, dealerHand, hide):
 
 def printBank(playerBank):
     print("Player Bank:", playerBank)
+    printDivider()
 
-game = blackjack.Blackjack()
+game = Blackjack()
 
 while True:
     print("Welcome to Blackjack!")
@@ -55,15 +62,15 @@ while True:
 
         printGame(playerHand, dealerHand, True)
 
-        if blackjack.Blackjack.checkBlackjack(playerHand):
+        if Blackjack.checkBlackjack(playerHand):
             print("BLACKJACK!")
-            playerBank += blackjack.Blackjack.payBlackjack(playerBet)
-        elif blackjack.Blackjack.checkBlackjack(dealerHand):
+            playerBank += Blackjack.payBlackjack(playerBet)
+        elif Blackjack.checkBlackjack(dealerHand):
             print("Dealer Blackjack!")
             printGame(playerHand, dealerHand, False)
             playerBank -= playerBet
         else:
-            while (not blackjack.Blackjack.isBusted(playerHand)):
+            while (not Blackjack.isBusted(playerHand)):
                 action = input("Hit (H) or Stand (S)?: ").upper()
 
                 if action == 'S':
@@ -75,18 +82,20 @@ while True:
 
                 printGame(playerHand, dealerHand, True)
 
-            if blackjack.Blackjack.isBusted(playerHand):
+            if Blackjack.isBusted(playerHand):
                 print("BUSTED!")
                 playerBank -= playerBet
             else:
-                while(blackjack.Blackjack.evaluateHand(dealerHand) < 17):
+                printGame(playerHand, dealerHand, False)
+
+                while(Blackjack.evaluateHand(dealerHand) < 17):
                     game.hit(dealerHand)
                     printGame(playerHand, dealerHand, False)
                     
-                dealerScore = blackjack.Blackjack.evaluateHand(dealerHand)
-                playerScore = blackjack.Blackjack.evaluateHand(playerHand)
+                dealerScore = Blackjack.evaluateHand(dealerHand)
+                playerScore = Blackjack.evaluateHand(playerHand)
 
-                if blackjack.Blackjack.isBusted(dealerHand):
+                if Blackjack.isBusted(dealerHand):
                     playerBank += playerBet
                     print("DEALER BUSTED!")
                 elif dealerScore > playerScore:
