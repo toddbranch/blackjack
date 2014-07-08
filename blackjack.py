@@ -18,35 +18,43 @@ class Blackjack:
                     'A': 11
             }
 
-    def __init__(self, bankroll):
+    def __init__(self):
         self.gameDeck = deck.Deck()
-        self.resetBankroll(bankroll)
 
     def newGame(self):
         self.gameDeck.shuffle()
-        self.dealerHand = []
-        self.playerHand = []
 
-    def resetBankroll(self, bankroll):
+    def deal(self, playerHand, dealerHand):
+        for i in range(2):
+            playerHand.append(self.gameDeck.deal())
+            dealerHand.append(self.gameDeck.deal())
 
-    def printHands(self):
+    def hit(self, hand):
+        hand.append(self.gameDeck.deal())
 
-    def hitPlayer(self):
-        self.playerHand.append(self.gameDeck.deal())
-
-    def hitDealer(self):
-        self.dealerHand.append(self.gameDeck.deal())
-
-    def evaluateHand(self, hand):
+    @classmethod
+    def evaluateHand(cls, hand):
         handValue = 0
 
         for card in hand:
-            handValue += self.getCardValue
+            handValue += cls.getCardValue
 
-        if handValue <= 21:
-            return handValue
-        else:
+        return handValue
 
+    @classmethod
+    def getCardValue(cls, card):
+        return cls._cardValues[card.value]
 
-    def getCardValue(self, card):
-        return Blackjack._cardValues[card.value]
+    @classmethod
+    def checkBlackjack(cls, hand):
+        if len(hand) > 2:
+            return False
+
+        if cls.evaluateHand(hand) == 21:
+            return True
+
+        return False
+
+    @staticmethod
+    def payBlackjack(bet):
+        return bet * 3/2
