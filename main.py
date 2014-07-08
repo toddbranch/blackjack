@@ -9,7 +9,7 @@ def getPlayerBet(bank):
 
     while bet > bank or bet < 1.0:
         try:
-            print("Bets must be more than 1 and less than bank.")
+            print("Bets must be more than 1 and less than Player Bank.")
             bet = float(input("Place your bet: "))
         except ValueError:
             print("Bets must be a numeric value!")
@@ -17,11 +17,14 @@ def getPlayerBet(bank):
 
     return bet
 
+actions = ['S', 'H', 'D']
+
+# TODO: Double-down logic can be added here
 def getPlayerAction():
     action = ""
-    while action != 'S' and action != 'H':
-        print("Only (H)it and (S)tand are valid commands.")
-        action = input("(H)it or (S)tand?: ").upper()
+    while action not in actions:
+        print("Only (H)it, (S)tand, or (D)ouble are valid commands.")
+        action = input("(H)it, (S)tand, or (D)ouble?: ").upper()
 
     return action
 
@@ -36,7 +39,7 @@ def printGameDealerVisible(game):
     printDivider()
 
 def printDivider():
-    print("###########################################")
+    print("######################################################")
 
 def printBank(playerBank):
     print("Player Bank:", playerBank)
@@ -118,11 +121,21 @@ while True:
             printGameDealerVisible(game)
             playerBank = dealerBlackjack(playerBank, playerBet)
         else:
+            # TODO: Split logic goes here
+
             while not game.isPlayerBusted():
                 action = getPlayerAction()
 
                 if action == 'S':
                     break
+                elif action == 'D':
+                    if playerBank >= playerBet * 2:
+                        playerBet += playerBet
+                        game.hitPlayer()
+                        printGameDealerHidden(game)
+                        break
+                    else:
+                        print("You don't have enough chips to make that bet!")
                 else:
                     game.hitPlayer()
 
