@@ -12,16 +12,25 @@ def getPlayerBet(bank):
 def printDivider():
     print("#################################")
 
-def printGame(playerHand, dealerHand):
+def printHand(hand):
+    for card in hand:
+        card.prettyPrint()
+    print()
+
+def printHidden(hand):
+    hand[0].prettyPrint()
+    print("|X|", sep="", end="")
+    print()
+
+def printGame(playerHand, dealerHand, hide):
     printDivider()
     print("Player: ")
-    for card in playerHand:
-        card.prettyPrint()
-    print()
+    printHand(playerHand)
     print("Dealer: ")
-    for card in dealerHand:
-        card.prettyPrint()
-    print()
+    if hide:
+        printHidden(dealerHand)
+    else:
+        printHand(dealerHand)
     printDivider()
 
 def printBank(playerBank):
@@ -31,7 +40,7 @@ game = blackjack.Blackjack()
 
 while True:
     print("Welcome to Blackjack!")
-    playerBank = 100
+    playerBank = 100.0
 
     while playerBank > 0:
         printBank(playerBank)
@@ -44,17 +53,18 @@ while True:
 
         game.deal(playerHand, dealerHand)
 
-        printGame(playerHand, dealerHand)
+        printGame(playerHand, dealerHand, True)
 
         if blackjack.Blackjack.checkBlackjack(playerHand):
             print("BLACKJACK!")
             playerBank += blackjack.Blackjack.payBlackjack(playerBet)
         elif blackjack.Blackjack.checkBlackjack(dealerHand):
             print("Dealer Blackjack!")
+            printGame(playerHand, dealerHand, False)
             playerBank -= playerBet
         else:
             while (not blackjack.Blackjack.isBusted(playerHand)):
-                action = input("Hit (H) or Stand (S)?: ")
+                action = input("Hit (H) or Stand (S)?: ").upper()
 
                 if action == 'S':
                     break
@@ -63,12 +73,30 @@ while True:
                 else:
                     print("Only H and S are valid commands.")
 
-                printGame(playerHand, dealerHand)
+                printGame(playerHand, dealerHand, True)
 
             if blackjack.Blackjack.isBusted(playerHand):
                 print("BUSTED!")
                 playerBank -= playerBet
+            else:
+                while(blackjack.Blackjack.evaluateHand(dealerHand) < 17):
+                    game.hit(dealerHand)
+                    printGame(playerHand, dealerHand, False)
+                    
+                dealerScore = blackjack.Blackjack.evaluateHand(dealerHand)
+                playerScore = blackjack.Blackjack.evaluateHand(playerHand)
 
+                if blackjack.Blackjack.isBusted(dealerHand):
+                    playerBank += playerBet
+                    print("DEALER BUSTED!")
+                elif dealerScore > playerScore:
+                    playerBank -= playerBet
+                    print("DEALER WINS!")
+                elif dealerScore < playerScore:
+                    playerBank += playerBet
+                    print("PLAYER WINS!")
+                else:
+                    print("PUSH!")
 
     print("You lost all your money!")
     printDivider()
