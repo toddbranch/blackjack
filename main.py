@@ -1,11 +1,15 @@
 from blackjack import Blackjack
 
+################################################################
+# Helper Functions
+################################################################
+
 def getPlayerBet(bank):
     bet = bank + 1
 
     while bet > bank:
         try:
-            bet = int(input("Place your bet: "))
+            bet = float(input("Place your bet: "))
         except ValueError:
             print("Bets must be a numeric value!")
             printDivider()
