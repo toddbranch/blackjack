@@ -5,10 +5,11 @@ from blackjack import Blackjack
 ################################################################
 
 def getPlayerBet(bank):
-    bet = bank + 1
+    bet = 0
 
-    while bet > bank:
+    while bet > bank or bet < 1.0:
         try:
+            print("Bets must be more than 1 and less than bank.")
             bet = float(input("Place your bet: "))
         except ValueError:
             print("Bets must be a numeric value!")
@@ -42,12 +43,12 @@ def printBank(playerBank):
     printDivider()
 
 def gameOver():
-    print("You lost all your money!")
+    print("YOU LOST ALL YOUR MONEY!")
     print("Restarting game...")
     printDivider()
 
 def push(bank, bet):
-    print("PUSH")
+    print("PUSH!")
     return bank
 
 def dealer_win(bank, bet):
@@ -69,7 +70,7 @@ def playerBlackjack(bank, bet):
     return bank + Blackjack.payBlackjack(bet)
 
 def dealerBlackjack(bank, bet):
-    print("Dealer Blackjack!")
+    print("DEALER BLACKJACK!")
     return bank - bet
 
 def dealerBusted(bank, bet):
