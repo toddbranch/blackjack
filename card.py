@@ -4,4 +4,4 @@ class Card:
         self.suit = suit
     
     def prettyPrint(self):
-        print("|", self.value, "|", sep="", end="")
+        return "|" + self.value + "|"
