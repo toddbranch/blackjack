@@ -120,7 +120,6 @@ class Blackjack:
     def payWin(bet):
         return bet
 
-
     @staticmethod
     def printHand(hand):
         for card in hand:
